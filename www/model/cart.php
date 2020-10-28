@@ -55,10 +55,14 @@ function get_user_cart($db, $user_id, $item_id){
 }
 
 function add_cart($db, $user_id, $item_id ) {
+  //カートの情報を取得する
   $cart = get_user_cart($db, $user_id, $item_id);
+  //もし取得に失敗したら
   if($cart === false){
+    //cartに書き込み処理を行う
     return insert_cart($db, $user_id, $item_id);
   }
+  //カートへの書き込み処理を行わなけえればカートの数量を更新する
   return update_cart_amount($db, $cart['cart_id'], $cart['amount'] + 1);
 }
 
@@ -75,6 +79,49 @@ function insert_cart($db, $user_id, $item_id, $amount = 1){
 
   return execute_query($db, $sql,[$item_id,$user_id,$amount]);
 }
+
+function insert_history($db, $user_id){
+  $sql = "
+    INSERT INTO
+      history(
+        user_id,
+        created
+      )
+    VALUES(?, now())
+  ";
+
+  return execute_query($db, $sql,[$user_id]);
+}
+
+function insert_details($db, $history_id, $item_id, $amount,$price){
+  $sql = "
+    INSERT INTO
+      details(
+        purchased_history_id,
+        item_id,
+        amount,
+        price
+      )
+    VALUES(?, ?, ?, ?)
+  ";
+
+  return execute_query($db, $sql,[$history_id,$item_id,$amount,$price] );
+}
+
+function bulk_regist($db,$carts){
+  $history = insert_history($db, $carts[0]['user_id']);
+  if($history === false){
+    return false;
+  }
+  $history_id = $db->lastInsertId();
+  foreach($carts as $cart){
+    $details = insert_details($db, $history_id, $cart['item_id'], $cart['amount'] , $cart['price']);
+    if($details === false){
+        set_error($cart['name'] . 'の書き込みに失敗しました。');
+        return false;
+      }
+    }
+  }
 
 function update_cart_amount($db, $cart_id, $amount){
   $sql = "
@@ -105,6 +152,7 @@ function purchase_carts($db, $carts){
   if(validate_cart_purchase($carts) === false){
     return false;
   }
+  $db->beginTransaction();
   foreach($carts as $cart){
     if(update_item_stock(
         $db, 
@@ -114,8 +162,14 @@ function purchase_carts($db, $carts){
       set_error($cart['name'] . 'の購入に失敗しました。');
     }
   }
-  
+  bulk_regist($db,$carts);
   delete_user_carts($db, $carts[0]['user_id']);
+  //if文を書く has_errorを入れて条件分岐
+  if(has_error() === true){
+    $db->rollback();
+  } else {
+    $db->commit();
+  }
 }
 
 function delete_user_carts($db, $user_id){
