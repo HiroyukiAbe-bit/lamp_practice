@@ -54,6 +54,106 @@ function get_user_cart($db, $user_id, $item_id){
 
 }
 
+function get_purchased_history($db, $user_id = null){
+  $params = [];
+  $sql = "
+  SELECT
+    history.purchased_history_id,
+    history.created,
+    SUM(details.price * details.amount) as totalprice
+  FROM
+    history
+  JOIN
+    details
+  ON
+    history.purchased_history_id = details.purchased_history_id";
+    if($user_id !== null){
+      $sql.=" WHERE
+      history.user_id = ?";
+      $params[] = $user_id;
+    } 
+  $sql.="
+  GROUP BY
+    history.purchased_history_id
+  ORDER BY 
+    history.purchased_history_id DESC
+  ";
+  return fetch_all_query($db, $sql, $params);
+}
+
+function get_purchased_allhistory($db){
+  $sql = "
+  SELECT
+    history.purchased_history_id,
+    history.created,
+    SUM(details.price * details.amount) as totalprice
+  FROM
+    history
+  JOIN
+    details
+  ON
+    history.purchased_history_id = details.purchased_history_id
+  GROUP BY
+    history.purchased_history_id
+  ORDER BY 
+    history.purchased_history_id DESC
+  ";
+  return fetch_all_query($db, $sql);
+}
+
+function get_details_list($db, $details_id, $user_id = null){
+  $params = [$details_id];
+  $sql = "
+  SELECT
+    details.purchased_history_id,
+    details.amount,
+    details.price,
+    items.name
+  FROM
+    details
+  JOIN
+    items
+  ON
+    details.item_id = items.item_id
+  WHERE
+    details.purchased_history_id = ?";
+  if($user_id !== null) {
+    $sql.=" AND 
+    EXISTS(SELECT * FROM history WHERE purchased_history_id = ? AND user_id = ?)
+    ";
+    $params[] = $details_id;
+    $params[] = $user_id;
+  }
+  return fetch_all_query($db, $sql, $params);
+}
+
+function get_history_list($db, $details_id, $user_id = null){
+  $params = [$details_id];
+  $sql = "
+  SELECT
+    history.purchased_history_id,
+    history.created,
+    SUM(details.price * details.amount) as totalprice
+  FROM
+    history
+  JOIN
+    details
+  ON
+    history.purchased_history_id = details.purchased_history_id
+  WHERE
+    history.purchased_history_id = ?";
+  if($user_id !== null) {
+    $sql.= " AND history.user_id = ?";
+    $params[] = $user_id;
+  }
+  $sql.= " 
+  GROUP BY
+    history.purchased_history_id
+  ";
+  return fetch_all_query($db, $sql, $params);
+}
+
+
 function add_cart($db, $user_id, $item_id ) {
   //カートの情報を取得する
   $cart = get_user_cart($db, $user_id, $item_id);
@@ -121,6 +221,7 @@ function bulk_regist($db,$carts){
         return false;
       }
     }
+    return true;
   }
 
 function update_cart_amount($db, $cart_id, $amount){
