@@ -22,7 +22,15 @@ function get_item($db, $item_id){
   return fetch_query($db, $sql,[$item_id]);
 }
 
-function get_items($db, $is_open = false){
+function get_items($db, $is_open = false, $now = 1){
+  $params = [];
+  if($now == 1){
+    $params[] = $now -1;
+    $params[] = MAX_VIEW;
+  } else {
+    $params[] = ($now -1)*MAX_VIEW;
+    $params[] = MAX_VIEW;
+  }
   $sql = '
     SELECT
       item_id, 
@@ -33,22 +41,26 @@ function get_items($db, $is_open = false){
       status
     FROM
       items
+
   ';
   if($is_open === true){
     $sql .= '
       WHERE status = 1
     ';
+    $sql .='
+    ORDER BY item_id DESC LIMIT ?,?
+    ';
   }
 
-  return fetch_all_query($db, $sql);
+  return fetch_all_query($db, $sql,$params);
 }
 
 function get_all_items($db){
   return get_items($db);
 }
 
-function get_open_items($db){
-  return get_items($db, true);
+function get_open_items($db,$now){
+  return get_items($db, true ,$now);
 }
 
 function regist_item($db, $name, $price, $stock, $status, $image){
@@ -141,6 +153,39 @@ function delete_item($db, $item_id){
   ";
   
   return execute_query($db, $sql, [$item_id]);
+}
+
+//itemsテーブルにあるレコード数を確認する関数
+function get_items_count($db){
+  $sql = "
+  SELECT 
+    COUNT(*) AS count 
+  FROM 
+    items";
+
+    return fetch_query($db,$sql);
+}
+
+//ページネーションのトータルページ数を入れる関数
+function get_pages_count($db){
+  //itemsテーブル内に入っているレコードの数を変数に入れる
+  $total_count = get_items_count($db);
+  //ページ数を変数に代入
+  $pages = ceil($total_count['count'] / MAX_VIEW);
+
+  //ページ数を返す
+  return $pages;
+} 
+
+//現在いるページのIDを取得する関数
+function get_page_id(){
+  if(!isset($_GET['page_id'])){
+    $now = 1;
+    return $now;
+  } else {
+    $now = $_GET['page_id'];
+    return $now;
+  }
 }
 
 

@@ -13,6 +13,14 @@ if(is_logined() === false){
 $db = get_db_connect();
 $user = get_login_user($db);
 
-$items = get_open_items($db);
+//ページネーションのトータルページ数を取得
+$pages = get_pages_count($db);
+
+//現在のページID取得
+$now = get_page_id();
+
+$items = get_open_items($db,$now);
+
+
 
 include_once VIEW_PATH . 'index_view.php';

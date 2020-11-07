@@ -41,6 +41,15 @@
       <?php } ?>
       </div>
     </div>
+    <div class="text-center">
+      <?php for($n = 1; $n <= $pages; $n ++){
+        if($n == $now) { ?>
+          <span style='padding: 5px;'><?php print $now; ?> </span>
+        <?php } else { ?>
+          <a href='index.php?page_id=<?php print $n; ?>' style='padding: 5px;'><?php print $n; ?></a>
+        <?php } ?>
+      <?php } ?>
+    </div>
   </div>
   
 </body>
