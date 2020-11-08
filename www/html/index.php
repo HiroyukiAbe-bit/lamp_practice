@@ -13,6 +13,9 @@ if(is_logined() === false){
 $db = get_db_connect();
 $user = get_login_user($db);
 
+//items総数の取得
+$total_count = get_items_count($db);
+
 //ページネーションのトータルページ数を取得
 $pages = get_pages_count($db);
 

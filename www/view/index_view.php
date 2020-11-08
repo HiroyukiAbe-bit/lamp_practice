@@ -59,6 +59,19 @@
          <a href="?page_id=<?php print($now+1); ?>">次のページへ</a>
       <?php } ?>
     </div> 
+    <div class="text-center">
+      <?php print $total_count['count']; ?>件中 
+      <?php if($now == 1){?>
+        <?php print $now; ?>件目 - <?php print MAX_VIEW; ?>件目の商品
+      <?php } else { ?>
+        <?php print (($now - 1) * MAX_VIEW) + 1; ?>件目 - 
+        <?php if ($now * MAX_VIEW > $total_count['count']) {
+          print $total_count['count'];?>件目の商品
+        <?php } else {?>
+          <?php print $now * MAX_VIEW; ?>件目の商品
+        <?php } ?> 
+      <?php } ?>
+    </div>
   </div>
   
 </body>
