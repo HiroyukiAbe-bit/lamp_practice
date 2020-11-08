@@ -44,19 +44,19 @@
     <?php if($now -1 <= 0) { ?>
       <span style='padding: 5px;'>前のページへ</span>
     <?php } else { ?>
-      <a href="index.php?page_id=<?php print($now-1); ?>">前のページへ</a>
+      <a href="?page_id=<?php print($now-1); ?>">前のページへ</a>
     <?php } ?>  
       <?php for($n = 1; $n <= $pages; $n ++){
         if($n == $now) { ?>
-          <span style='padding: 5px;'><?php print $now; ?> </span>
+          <a href='?page_id=<?php print $now; ?>' style='padding: 5px; color:red;'><?php print $now; ?></a>
         <?php } else { ?>
-          <a href='index.php?page_id=<?php print $n; ?>' style='padding: 5px;'><?php print $n; ?></a>
+          <a href='?page_id=<?php print $n; ?>' style='padding: 5px;'><?php print $n; ?></a>
         <?php } ?>
       <?php } ?>
-      <?php if($now +1 >  $pages){ ?>
+      <?php if($now +1 > $pages){ ?>
         <span style='padding: 5px;'>次のページへ</span>
       <?php } else { ?>
-         <a href="index.php?page_id=<?php print($now+1); ?>">次のページへ</a>
+         <a href="?page_id=<?php print($now+1); ?>">次のページへ</a>
       <?php } ?>
     </div> 
   </div>
