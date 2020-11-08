@@ -13,7 +13,6 @@
   <div class="container">
     <h1>商品一覧</h1>
     <?php include VIEW_PATH . 'templates/messages.php'; ?>
-
     <div class="card-deck">
       <div class="row">
       <?php foreach($items as $item){ ?>
@@ -42,6 +41,11 @@
       </div>
     </div>
     <div class="text-center">
+    <?php if($now -1 <= 0) { ?>
+      <span style='padding: 5px;'>前のページへ</span>
+    <?php } else { ?>
+      <a href="index.php?page_id=<?php print($now-1); ?>">前のページへ</a>
+    <?php } ?>  
       <?php for($n = 1; $n <= $pages; $n ++){
         if($n == $now) { ?>
           <span style='padding: 5px;'><?php print $now; ?> </span>
@@ -49,7 +53,12 @@
           <a href='index.php?page_id=<?php print $n; ?>' style='padding: 5px;'><?php print $n; ?></a>
         <?php } ?>
       <?php } ?>
-    </div>
+      <?php if($now +1 >  $pages){ ?>
+        <span style='padding: 5px;'>次のページへ</span>
+      <?php } else { ?>
+         <a href="index.php?page_id=<?php print($now+1); ?>">次のページへ</a>
+      <?php } ?>
+    </div> 
   </div>
   
 </body>
