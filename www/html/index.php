@@ -13,17 +13,17 @@ if(is_logined() === false){
 $db = get_db_connect();
 $user = get_login_user($db);
 
-//items総数の取得
-$total_count = get_items_count($db);
-
 //ページネーションのトータルページ数を取得
-$pages = get_pages_count($db);
+$page_data = get_pages_count($db);
 
 //現在のページID取得
 $now = get_page_id();
 
+//現在のページのアイテム表示件数の開始数
+$start_item_number = ($now - 1) * MAX_VIEW + 1;
+//現在のページのアイテム表示件数の終了数
+$end_item_number = min($now * MAX_VIEW,$page_data['total_count']);
+
 $items = get_open_items($db,$now);
-
-
 
 include_once VIEW_PATH . 'index_view.php';

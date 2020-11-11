@@ -22,14 +22,16 @@ function get_item($db, $item_id){
   return fetch_query($db, $sql,[$item_id]);
 }
 
-function get_items($db, $is_open = false, $now = 1){
+function get_items($db, $is_open = false, $now = null){
   $params = [];
-  if($now == 1){
-    $params[] = $now -1;
-    $params[] = MAX_VIEW;
-  } else {
-    $params[] = ($now -1)*MAX_VIEW;
-    $params[] = MAX_VIEW;
+  if($now !== null){
+    if($now == 1){
+      $params[] = $now -1;
+      $params[] = MAX_VIEW;
+    } else {
+      $params[] = ($now -1)*MAX_VIEW;
+      $params[] = MAX_VIEW;
+    }  
   }
   $sql = '
     SELECT
@@ -170,11 +172,13 @@ function get_items_count($db){
 function get_pages_count($db){
   //itemsテーブル内に入っているレコードの数を変数に入れる
   $total_count = get_items_count($db);
+
+  $total_count = $total_count['count'];
   //ページ数を変数に代入
-  $pages = ceil($total_count['count'] / MAX_VIEW);
+  $pages = (int)ceil($total_count / MAX_VIEW);
 
   //ページ数を返す
-  return $pages;
+  return array("total_count" => $total_count, "total_pages" => $pages);
 } 
 
 //現在いるページのIDを取得する関数
