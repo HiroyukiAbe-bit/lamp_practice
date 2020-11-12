@@ -61,13 +61,8 @@
     </div> 
     <div class="text-center">
       <?php print $page_data['total_count']; ?>件中 
-      <?php if($now == 1){?>
-        <?php print $now; ?>件目 - <?php print MAX_VIEW; ?>件目の商品
-      <?php } else { ?>
         <?php print $start_item_number ?>件目 - <?php print $end_item_number; ?>件目
-      <?php } ?>
     </div>
   </div>
-  
 </body>
 </html>

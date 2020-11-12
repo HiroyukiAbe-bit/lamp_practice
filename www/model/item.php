@@ -163,7 +163,9 @@ function get_items_count($db){
   SELECT 
     COUNT(*) AS count 
   FROM 
-    items";
+    items
+  WHERE
+    status = 1";
 
     return fetch_query($db,$sql);
 }
