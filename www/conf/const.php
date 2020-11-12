@@ -50,3 +50,6 @@ define('PERMITTED_IMAGE_TYPES', array(
   IMAGETYPE_JPEG => 'jpg',
   IMAGETYPE_PNG => 'png',
 ));
+
+//ページネーション用の1ページの表示数定数
+define('MAX_VIEW',8);
