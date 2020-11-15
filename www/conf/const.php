@@ -1,7 +1,7 @@
 <?php
 
-define('MODEL_PATH', $_SERVER['DOCUMENT_ROOT'] . '/../model/');
-define('VIEW_PATH', $_SERVER['DOCUMENT_ROOT'] . '/../view/');
+define('MODEL_PATH', $_SERVER['DOCUMENT_ROOT'] . '/../model/ec_site/');
+define('VIEW_PATH', $_SERVER['DOCUMENT_ROOT'] . '/../view/ec_site/');
 
 
 define('IMAGE_PATH', '/assets/images/');
@@ -14,14 +14,15 @@ define('DB_USER', 'testuser');
 define('DB_PASS', 'password');
 define('DB_CHARSET', 'utf8');
 
-define('SIGNUP_URL', '/signup.php');
-define('LOGIN_URL', '/login.php');
-define('LOGOUT_URL', '/logout.php');
-define('HOME_URL', '/index.php');
-define('CART_URL', '/cart.php');
-define('HISTORY_URL', '/history.php');
-define('FINISH_URL', '/finish.php');
-define('ADMIN_URL', '/admin.php');
+define('SIGNUP_URL', '/ec_site/signup.php');
+define('LOGIN_URL', '/ec_site/login.php');
+define('LOGOUT_URL', '/ec_site/logout.php');
+define('HOME_URL', '/ec_site/index.php');
+define('CART_URL', '/ec_site/cart.php');
+define('HISTORY_URL', '/ec_site/history.php');
+define('FINISH_URL', '/ec_site/finish.php');
+define('ADMIN_URL', '/ec_site/admin.php');
+
 
 define('REGEXP_ALPHANUMERIC', '/\A[0-9a-zA-Z]+\z/');
 define('REGEXP_POSITIVE_INTEGER', '/\A([1-9][0-9]*|0)\z/');
