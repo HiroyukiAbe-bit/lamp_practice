@@ -4,8 +4,8 @@ define('MODEL_PATH', $_SERVER['DOCUMENT_ROOT'] . '/../model/ec_site/');
 define('VIEW_PATH', $_SERVER['DOCUMENT_ROOT'] . '/../view/ec_site/');
 
 
-define('IMAGE_PATH', '/assets/images/');
-define('STYLESHEET_PATH', '/assets/css/');
+define('IMAGE_PATH', '/ec_site/assets/images/');
+define('STYLESHEET_PATH', '/ec_site/assets/css/');
 define('IMAGE_DIR', $_SERVER['DOCUMENT_ROOT'] . '/assets/images/' );
 
 define('DB_HOST', 'mysql');
