@@ -1,5 +1,5 @@
 <?php
-require_once '../../conf/const.php';
+require_once '../../conf/ec_site/const.php';
 require_once MODEL_PATH . 'functions.php';
 
 session_start();

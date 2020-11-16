@@ -21,9 +21,9 @@ services:
       - ./db:/var/lib/mysql # ホストOSのdbフォルダ内にmysqlコンテナのDBの内容を保存
     environment:
       - MYSQL_ROOT_PASSWORD=root # mysqlのルートパスワードを設定
-      - MYSQL_DATABASE=sample # デフォルトで作成するデータベース名を設定
-      - MYSQL_USER=testuser # デフォルトで作成するDBユーザー名を設定
-      - MYSQL_PASSWORD=password # デフォルトで作成するDBユーザーのパスワードを設定
+      - MYSQL_DATABASE=ec_site # デフォルトで作成するデータベース名を設定
+      - MYSQL_USER=root # デフォルトで作成するDBユーザー名を設定
+      - MYSQL_PASSWORD=Wjtr8Il0n # デフォルトで作成するDBユーザーのパスワードを設定
       - "TZ=Asia/Tokyo" # タイムゾーンを設定
 
   # 3. phpmyadminをインストールするコンテナ

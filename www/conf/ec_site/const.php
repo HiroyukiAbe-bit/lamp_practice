@@ -8,10 +8,10 @@ define('IMAGE_PATH', '/ec_site/assets/images/');
 define('STYLESHEET_PATH', '/ec_site/assets/css/');
 define('IMAGE_DIR', $_SERVER['DOCUMENT_ROOT'] . '/ec_site/assets/images/' );
 
-define('DB_HOST', 'localhost');
+define('DB_HOST', 'mysql');
 define('DB_NAME', 'ec_site');
-define('DB_USER', 'root');
-define('DB_PASS', 'Wjtr8Il0n');
+define('DB_USER', 'testuser');
+define('DB_PASS', 'password');
 define('DB_CHARSET', 'utf8');
 
 define('SIGNUP_URL', '/ec_site/signup.php');
