@@ -1,0 +1,133 @@
+body {
+    overflow-x: hidden;
+    position: relative;
+    color: #272b33;
+}
+
+header {            
+    border-bottom:solid 1px gray;
+    margin: 0 -500%; /* ネガティブマージンを追記 */
+    padding: 0 500%; /* マージンで横へはみ出した部分を相殺 */
+}
+
+a {
+    text-decoration:none;
+}
+
+.top_menu {
+    width :100%;
+    display:flex;
+    align-items: flex-end;
+}
+
+.back{
+    padding-left:10px;
+    padding-bottom:13px;
+}
+
+.noline {
+    text-decoration:none;
+    padding-left:5px;
+}
+
+.form{
+    margin:10px;
+}
+
+h1{
+    margin:0;
+    padding-top:5px;
+    padding-left:5px;
+    padding-bottom:7px;
+}
+
+main {
+    flex-basis:85%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+p {
+    margin-top:5px;
+    margin-bottom:5px;
+}
+
+.border{
+    border-top:solid 1px gray;
+    margin: 0 -500%; /* ネガティブマージンを追記 */
+    padding: 0 500%; /* マージンで横へはみ出した部分を相殺 */
+}
+
+.center {
+    width:100%;
+    display:flex;
+    justify-content:flex-start;
+    align-items: center;
+}
+
+.table{
+    border:solid 1px gray;
+    width:600px;
+    margin-top:10px;
+    margin-bottom:10px;
+    margin-left:10px;
+}
+
+.data {
+    display:flex;
+    justify-content:space-around;
+    width:600px;
+}
+
+.comment {
+    border-top:solid gray 1px;
+    width:600px;
+}
+
+.message{
+    width:300px;
+    display:flex;
+    justify-content:center;
+    align-items: center;
+    padding-bottom:13px;
+}
+
+.submit {
+    width: 90px;
+    height: 22px;
+    border: 1px;
+    border-color: gray;
+    border-style: solid;
+}
+
+.img_size{
+    width:300px;
+}
+
+.list {
+    text-align:right;
+    width:250px;
+    padding:10px;
+}
+
+.stock_textbox {
+    text-align:right;
+    width:80px;
+}
+
+.submit_status {
+    width: 220px;
+    height: 22px;
+    border: 1px;
+    border-color: gray;
+    border-style: solid;
+}
+
+.submit_delete {
+    width: 70px;
+    height: 22px;
+    border: 1px;
+    border-color: gray;
+    border-style: solid;
+}
