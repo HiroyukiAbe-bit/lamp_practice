@@ -1,36 +1,38 @@
 <?php
-$host = 'mysql';
-$username = 'hiroyuki';
-$password = 'password';
-$dbname = 'simple_music_fan';
-$charset = 'utf8';
+require_once '../../conf/simple_music_fan/const.php';
 
-//MySQL用のDSN文字列
-$dsn = 'mysql:dbname='.$dbname.';host='.$host.';charset='.$charset;
-
-$img_dir = './img/';
-
-$err_msg = array();
+$dsn = 'mysql:dbname='.DB_NAME.';host='.DB_HOST.';charset='.DB_CHARSET;
 
 $seach = '';
 
 session_start();
 
-if(!isset($_SESSION['userid'])) {
-    $_SESSION['userid'] = 'ユーザー';
+//$_SESSION['user_id]の判別用関数
+function valid_session_user($user_id){
+    if(!isset($user_id)) {
+        $user_id = 'ユーザー';
+        $_SESSION['userid'] = $user_id;
+        return $user_id;
+    }
+    return $_SESSION['userid'];
 }
+
+$user_id = valid_session_user($_SESSION['userid']);
+
+
+$err_msg = array();
 
 if($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['type'] === 'seach'){
     $seach = htmlspecialchars($_POST['seach'],ENT_QUOTES,'utf-8');
     $seach = str_replace([' ','　'],'',$seach);
-    if(preg_match('/^[a-zA-Zａ-ｚＡ-Ｚ0-9０-９ぁ-んァ-ヶｦ-ﾟー-龥]+$/u',$seach) == 0){
+    if(preg_match(SEARCH_STR,$seach) == 0){
         $err_msg = '正しい文字列で入力してください。';
     }
 }
 
 try {
     //データベースに接続
-    $dbh = new PDO($dsn, $username, $password, array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8mb4'));
+    $dbh = new PDO($dsn, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8mb4'));
     $dbh->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
     $dbh->setAttribute(PDO::ATTR_EMULATE_PREPARES,false);
     
@@ -121,14 +123,14 @@ $i = 0;
                     <div class="top_item">
                         <div class="center">
                             <div>
-                                <?php if(isset($_SESSION['userid'])){
-                                    print 'ようこそ!' . $_SESSION['userid'] . 'さん';
+                                <?php if(isset($user_id)){
+                                    print 'ようこそ!' . $user_id . 'さん';
                                 }
                                 ?>
                             </div>
                             <div class="right">
-                                <?php if(isset($_SESSION['userid'])){
-                                        if($_SESSION['userid'] === 'ユーザー') {?>
+                                <?php if(isset($user_id)){
+                                        if($user_id === 'ユーザー') {?>
                                         <a href="./login.php">ログイン</a>
                                     <?php } else {?>
                                         <a href="./logout.php">ログアウト</a>
@@ -238,7 +240,7 @@ $i = 0;
                                             <td><p class="center"><?php print $value['name']; ?></p>
                                                 <div class="center2">
                                                     <a class="center" href="<?php print './item.php?item_id=' . $value['id']; ?>">
-                                                        <img class="img_size" src="<?php print $img_dir . $value['img']; ?>">
+                                                        <img class="img_size" src="<?php print IMG_DIR . $value['img']; ?>">
                                                     </a>
                                                 </div>
                                             </td>
@@ -257,7 +259,7 @@ $i = 0;
                                             <td><p class="center"><?php print $value['name']; ?></p>
                                                 <div class="center2">
                                                     <a class="center" href="<?php print './item.php?item_id=' . $value['id']; ?>">
-                                                        <img class="img_size" src="<?php print $img_dir . $value['img']; ?>">
+                                                        <img class="img_size" src="<?php print IMG_DIR . $value['img']; ?>">
                                                     </a>
                                                 </div>
                                             </td>
