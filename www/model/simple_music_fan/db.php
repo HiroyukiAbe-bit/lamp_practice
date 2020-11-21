@@ -24,3 +24,14 @@ function fetch_all_query($dbh, $sql, $params = array()){
     throw $e;
   }
 }
+
+function fetch_query($dbh, $sql, $params = array()){
+  try{
+    $stmt = $dbh->prepare($sql);
+    $stmt->execute($params);
+    return $stmt->fetch();
+  }catch(PDOException $e){
+    throw $e;
+  }
+  return false;
+}
