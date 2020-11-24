@@ -29,16 +29,27 @@ $items = get_open_items($dbh,$now);
 
 
 if($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['type'] === 'search'){
+    $search = $_POST['search'];
 
-    $items = is_search_item($dbh,$_POST['search']);
-    
+    $page_data = is_search_item($dbh,$now,$search);
+
+    //現在のページID取得
+    $now = $page_data['now'];
+
+    //現在のページのアイテム表示件数の開始数
+    $start_item_number = $page_data['start_item_number'];
+
+    //現在のページのアイテム表示件数の終了数
+    $end_item_number = $page_data['end_item_number'];
+
+    $items = $page_data['items'];
+
     if(!is_array($items)) {
         $err_msg[] = $items;
-        $items = array_reverse(get_item($dbh));
+        $items = get_open_items($dbh,$now);
     }
-}   
 
-$item_view_number = 0;
+}   
 
 include_once VIEW_PATH . 'index_view.php';
 ?>

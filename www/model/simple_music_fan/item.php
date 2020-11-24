@@ -2,46 +2,28 @@
 require_once '../../conf/simple_music_fan/const.php';
 require_once MODEL_PATH . 'db.php';
 
-function get_item($dbh) {
-  $sql = "
+function get_item($dbh,$item_id) {
+  $sql= "
   SELECT 
-    id,
+    item_id,
     name,
-    status,
+    stock,
     img,
-    price 
+    price,
+    comment,
+    category 
   FROM 
-    items";
+    items
+  WHERE
+    item_id = ?";
   
-  return fetch_all_query($dbh,$sql);
+  return fetch_query($dbh,$sql,[$item_id]);
 }
 
 
-//先生に質問する。
-function get_search_item($dbh,$search = null){
+
+function get_items_count($dbh,$search = null){
   $params = [];
-    $sql = "
-    SELECT 
-      item_id,
-      name,
-      status,
-      img,
-      price 
-    FROM 
-      items 
-    WHERE 
-      name";
-    if($search !== null) {
-    $params[] = "%" . $search . "%";
-    $sql .="
-    LIKE 
-      ?";
-    }
-    return fetch_all_query($dbh,$sql,$params);
-}
-
-
-function get_items_count($dbh){
   $sql = "
   SELECT 
     COUNT(*) AS count 
@@ -49,26 +31,23 @@ function get_items_count($dbh){
     items
   WHERE
     status = 1";
+  if($search !== null) {
+    $params[] = "%" . $search . "%";
+    $sql .="
+    AND name LIKE ?
+    ";
+    }
 
-    return fetch_query($dbh,$sql);
+    return fetch_query($dbh,$sql,$params);
 }
 
-function get_open_items($dbh,$now){
-  return get_items($dbh, true ,$now);
+function get_open_items($dbh,$now,$search = null){
+  return get_items($dbh, true ,$now,$search);
 }
 
-function get_items($dbh, $is_open = false, $now = null){
+function get_items($dbh, $is_open = false, $now = null , $search = null){
   $params = [];
-  if($now !== null){
-    if($now == 1){
-      $params[] = $now -1;
-      $params[] = MAX_VIEW;
-    } else {
-      $params[] = ($now -1)*MAX_VIEW;
-      $params[] = MAX_VIEW;
-    }  
-  }
-  $sql = '
+  $sql = "
     SELECT
       item_id, 
       name,
@@ -78,34 +57,66 @@ function get_items($dbh, $is_open = false, $now = null){
       status
     FROM
       items
-
-  ';
+  ";
   if($is_open === true){
-    $sql .= '
+    $sql .="
       WHERE status = 1
-    ';
-    $sql .='
-    ORDER BY item_id DESC LIMIT ?,?
-    ';
+    ";
+  }
+  if($search !== null) {
+    $params[] = "%" . $search . "%";
+    $sql .="
+    AND name LIKE ?
+    ";
+    }
+  if($now !== null){
+    if($now == 1){
+      $params[] = $now -1;
+      $params[] = MAX_VIEW;
+    } else {
+      $params[] = ($now -1)*MAX_VIEW;
+      $params[] = MAX_VIEW;
+    }  
+    $sql .="
+     ORDER BY item_id DESC LIMIT ?,?
+    ";
   }
 
-  return fetch_all_query($dbh, $sql,$params);
+  return fetch_all_query($dbh,$sql,$params);
 }
 
-//ページネーションのトータルページ数を入れる関数
-function get_pages_count($dbh){
-  //itemsテーブル内に入っているレコードの数を変数に入れる
-  $total_count = get_items_count($dbh);
+function is_purchase_history($dbh,$user_id,$item_id){
+  //SQL文を作成
+  $sql = '
+  SELECT 
+    count(*) 
+  FROM 
+    purchase 
+  WHERE 
+    user_id = ? 
+  AND 
+    item_id = ?';
+
+  return fetch_Column($dbh, $sql, [$user_id,$item_id]);
+}
+
+
+//非DB関数
+
+
+function get_pages_count($dbh,$search = null){
+  
+  $total_count = get_items_count($dbh,$search);
 
   $total_count = $total_count['count'];
-  //ページ数を変数に代入
+  
   $pages = (int)ceil($total_count / MAX_VIEW);
 
-  //ページ数を返す
+  
   return array("total_count" => $total_count, "total_pages" => $pages);
 } 
 
-//現在いるページのIDを取得する関数
+
 function get_page_id(){
   if(!isset($_GET['page_id'])){
     $now = 1;
@@ -115,3 +126,4 @@ function get_page_id(){
     return $now;
   }
 }
+

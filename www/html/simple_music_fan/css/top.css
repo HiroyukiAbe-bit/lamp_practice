@@ -135,3 +135,9 @@ p {
     display:flex;
     justify-content:center;
 }
+
+.wrap {
+    display:flex;
+    flex-flow: column;
+    width:100%;
+  }

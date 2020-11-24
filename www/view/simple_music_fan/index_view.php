@@ -4,6 +4,8 @@
         <meta charset="utf-8">
         <title>Simple Music Fan</title>
         <link rel="stylesheet" href="/simple_music_fan/css/top.css">
+        <meta name="viewport" content="width=device-width,initial-scale=1">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
     </head>
     <body>
         <header>
@@ -148,7 +150,7 @@
                                         <tr>
                                             <td><p class="center"><?php print $value['name']; ?></p>
                                                 <div class="center2">
-                                                    <a class="center" href="<?php print './item.php?item_id=' . $value['id']; ?>">
+                                                    <a class="center" href="<?php print './item.php?item_id=' . $value['item_id']; ?>">
                                                         <img class="img_size" src="<?php print IMG_DIR . $value['img']; ?>">
                                                     </a>
                                                 </div>
@@ -163,7 +165,7 @@
                                         <tr>
                                             <td><p class="center"><?php print $value['name']; ?></p>
                                                 <div class="center2">
-                                                    <a class="center" href="<?php print './item.php?item_id=' . $value['id']; ?>">
+                                                    <a class="center" href="<?php print './item.php?item_id=' . $value['item_id']; ?>">
                                                         <img class="img_size" src="<?php print IMG_DIR . $value['img']; ?>">
                                                     </a>
                                                 </div>
@@ -172,28 +174,32 @@
                                     </table>
                            <?php endforeach; ?>
                         <?php  } ?>
-                        <div class="center">
-                        <?php if($now -1 <= 0) { ?>
-                          <span style='padding: 5px;'>前のページへ</span>
-                        <?php } else { ?>
-                          <a href="?page_id=<?php print($now-1); ?>">前のページへ</a>
-                        <?php } ?>  
-                          <?php for($n = 1; $n <= $page_data['total_pages']; $n ++){
-                            if($n == $now) { ?>
-                              <a href='?page_id=<?php print $now; ?>' style='padding: 5px; color:red;'><?php print $now; ?></a>
-                            <?php } else { ?>
-                              <a href='?page_id=<?php print $n; ?>' style='padding: 5px;'><?php print $n; ?></a>
-                            <?php } ?>
-                          <?php } ?>
-                          <?php if($now +1 > $page_data['total_pages']){ ?>
-                            <span style='padding: 5px;'>次のページへ</span>
-                          <?php } else { ?>
-                            <a href="?page_id=<?php print($now+1); ?>">次のページへ</a>
-                          <?php } ?>
-                        </div> 
-                        <div class="center">
-                          <?php print $page_data['total_count']; ?>件中 
-                            <?php print $start_item_number ?>件目 - <?php print $end_item_number; ?>件目
+                        <div class="center2">
+                            <div class="wrap">
+                                <div class="center">
+                                <?php if($now -1 <= 0) { ?>
+                                <span style='padding: 5px;'>前のページへ</span>
+                                <?php } else { ?>
+                                <a href="?page_id=<?php print($now-1); ?>">前のページへ</a>
+                                <?php } ?>  
+                                <?php for($n = 1; $n <= $page_data['total_pages']; $n ++){
+                                    if($n == $now) { ?>
+                                    <a href='?page_id=<?php print $now; ?>' style='padding: 5px; color:red;'><?php print $now; ?></a>
+                                    <?php } else { ?>
+                                    <a href='?page_id=<?php print $n; ?>' style='padding: 5px;'><?php print $n; ?></a>
+                                    <?php } ?>
+                                <?php } ?>
+                                <?php if($now +1 > $page_data['total_pages']){ ?>
+                                    <span style='padding: 5px;'>次のページへ</span>
+                                <?php } else { ?>
+                                    <a href="?page_id=<?php print($now+1); ?>">次のページへ</a>
+                                <?php } ?>
+                                </div> 
+                                <div class="center">
+                                    <?php print $page_data['total_count']; ?>件中 
+                                    <?php print $start_item_number ?>件目 - <?php print $end_item_number; ?>件目
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
